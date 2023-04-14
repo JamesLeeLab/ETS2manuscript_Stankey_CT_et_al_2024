@@ -1,0 +1,14 @@
+# SNPsea v1.0.3
+--snps             IBD_snps.txt
+--gene-matrix      GO_BP_ETS2_SNPsea.gct.gz
+--gene-intervals   NCBIgenes2013.bed.gz
+--snp-intervals    TGP2011.bed.gz
+--null-snps        Lango2010.txt.gz
+--out              IBD_SNPs_ETS2_GO_BP_2022_500kslop_OElonglist_10M
+--score            single
+--slop             500000
+--threads          8
+--null-snpsets     0
+--min-observations 100
+--max-iterations   5000000
+

@@ -1,0 +1,3 @@
+group_name	target	replicate_number	bam_name	bed_name
+Macro	PU1	1	S1_GSM1681423_macro_baselinespi1_trimmed_hg19_rmdup_resorted.bam	PEAKS/PU1_S1_macro_Baseline_hg19_peaks.bed
+Macro	PU1	2	S3_GSM1681425_macro_il4spi1.fastqsanger.gz_trimmed_hg19_sorted_rmdup_resorted.bam	PEAKS/PU1_S3_macro_il4_hg19_peaks.bed
