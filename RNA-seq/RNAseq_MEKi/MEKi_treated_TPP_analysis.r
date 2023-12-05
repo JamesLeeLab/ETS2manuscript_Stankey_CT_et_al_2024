@@ -1,4 +1,4 @@
-# Analysis of TPP macrophages treated with a MEK inhibitor
+# Analysis of TPP macrophages treated with a MEK inhibitor (figure 5)
 suppressMessages(library(limma))
 suppressMessages(library(affy))
 suppressMessages(library(edgeR))

@@ -1,5 +1,7 @@
-##Pipeline for ATAC-seq analysis with hg19:
-#this pipeline works on paired-end fastq files for ATAC-seq datasets. 
+## Pipeline for ATAC-seq analysis 
+# This pipeline was used to analyse all the ATAC-seq datasets included in this manuscript, from initial QC on the fastq files to peak calling with MACS2
+# Genome built used: hg19
+# this pipeline works on paired-end fastq files. 
 
 #FASTQC on initial fastq files:
 module load FastQC/0.11.8-Java-1.8
@@ -24,7 +26,7 @@ folder="/Trimgalore"
 a=(/path/to/fasq/files/*.fastq.gz)
 for ((i=0; i<${#a[@]}; i+=2));
 do 
-        trim_galore --phred33 -q 24 --nextera \
+        trim_galore --phred33 -q 24 \
         --length 20 --paired --fastqc \
         -o $folder/ "${a[i]}" "${a[i+1]}";
 done

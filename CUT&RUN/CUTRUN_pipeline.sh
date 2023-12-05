@@ -1,5 +1,5 @@
-##Analysis of TPP macrophages ETS2 CUT&RUN data, with hg19
-##libraries sequenced on a NovaSeq S2 with 2x100 bp paired-end reads
+## Analysis of TPP macrophages ETS2 CUT&RUN data, with hg19, used for figure 4 and supplementary figures 6 and 8
+## libraries sequenced on a NovaSeq S2 with 2x100 bp paired-end reads
 
 #FASTQC on initial fastq files:
 module load FastQC/0.11.8-Java-1.8
@@ -164,19 +164,28 @@ res <- est.IDR(dat, mu=3, sigma=1, rho=.9, p=.5)
 df <- data.frame(rep1=dat[,1],rep2=dat[,2], rank1=rank(-dat[,1]),rank2=rank(-dat[,2]), idr=res$idr)
 write.csv(df,file="idr_of_overlapping_peaks_dups_KEPT.csv")
 
-# heatmap of C&R idr data overlain on ATAC-seq peaks from TPP macrophages
+# heatmap of C&R idr data overlaid on chromatin marks from TPP macrophages
 require(EnrichedHeatmap)
 require(rtracklayer)
 require(circlize)
 require(data.table)
 require(magick)
 require(Cairo)
+h3k27ac=read.table("h3k27ac_coords.txt",sep="\t",header=F)
+h3k27ac=GRanges(h3k27ac$V1,IRanges(h3k27ac$V2,h3k27ac$V3))
+h3k27ac <- keepStandardChromosomes(h3k27ac, pruning.mode="coarse")
+h3k4me3=read.table("h3k4me3_coords.txt",sep="\t",header=F) # these coordinates are based on analysis of raw data (using ChIP-seq code provided) from a published study of H3K4me3 ChIP-seq in TPP macrophages (GSE47188)
+h3k4me3=GRanges(h3k4me3$V1,IRanges(h3k4me3$V2,h3k4me3$V3))
+h3k4me3 <- keepStandardChromosomes(h3k4me3, pruning.mode="coarse")
 atac=read.table("atac_peaks.txt",sep="\t",header=F)
 atac=GRanges(atac$V1,IRanges(atac$V2,atac$V3))
 atac <- keepStandardChromosomes(atac, pruning.mode="coarse")
 ExtendSize <- 2000
 atac.extended  <- resize(atac, fix = "center", width = ExtendSize*2)
+h3k27ac.extended  <- resize(h3k27ac, fix = "center", width = ExtendSize*2)
+h3k4me3.extended  <- resize(h3k4me3, fix = "center", width = ExtendSize*2)
 BigWig <- rtracklayer::import("CRETS2_Ther_hg19_STmerged_rmunm.bw", format = "BigWig", selection = BigWigSelection(atac.extended))
+#can repeat for histone marks
 normMatrix <- normalizeToMatrix(signal = BigWig, target = resize(atac, fix = "center", width = 1), background = 0, keep = c(0, 0.99), target_ratio = 0, mean_mode = "w0", value_column = "score", extend = ExtendSize)
 col_fun = circlize::colorRamp2(quantile(normMatrix, c(0, .99)), c("darkblue", "darkgoldenrod1"))
 EH <- EnrichedHeatmap( mat = normMatrix, pos_line = FALSE, border = T, col = col_fun, column_title = "ETS2 CUT&RUN", column_title_gp = gpar(fontsize = 15, fontfamily = "sans"), use_raster = TRUE, raster_quality = 10, raster_device = "CairoPNG", rect_gp = gpar(col = "transparent"), heatmap_legend_param = list(legend_direction = "horizontal", title = "normalized counts"), top_annotation = HeatmapAnnotation(enriched = anno_enriched(gp = gpar(col = "black", lty = 1, lwd=2),col="black")))

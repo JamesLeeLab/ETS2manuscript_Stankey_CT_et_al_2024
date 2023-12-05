@@ -1,5 +1,9 @@
 ## Pipeline used to get the read count from RNA-seq data
 # This pipeline works on paired-end fastq files
+# Used for: ETS2-edited (ETS2 KO), chr21q22-edited and unedited macrophages (NTC) (Figure 2 and 4) 
+#           ETS2 overexpression (Figure 3)
+#           colonic biopsies (Figure 5)
+#           TPP macrophages with MEK inhibitor (Figure 5) 
 
 #FASTQC on initial fastq files:
 module load FastQC/0.11.8-Java-1.8
@@ -11,7 +15,6 @@ do
         -o $folder;
 done
 
-
 #to run MultiQC on these fastQC files:
 cd $folder
 module load MultiQC/0.9-foss-2016b-Python-2.7.12
@@ -19,7 +22,7 @@ module load matplotlib/1.5.3-foss-2016b-Python-2.7.12
 multiqc .
 
 #Trimgalore in paired-end more with extra trimmming (3 bases on each read) 
-#as indicated in the library prep kit manual (SMARTer Stranded Total RNA-Seq Kit v2 - Pico Input Mammalian)
+#as indicated in the library prep kit manual (Takara SMARTer Stranded Total RNA-Seq Kit v2 - Pico Input Mammalian)
 module load TrimGalore/0.6.0
 folder="/Trimgalore"
 
@@ -36,8 +39,8 @@ done
 cd Trimgalore
 multiqc .
 
-#run BBSplit to get rid of ribosomal reads, using the Human ribosomal DNA complete repeating unit, GenBank: U13369.1
-module load BBMap/36.20-foss-2016b-Java-1.8.0_92
+#run BBSplit to get rid of ribosomal reads, using the Human ribosomal DNA complete repeating unit, GenBank: U13369.1 (="humanrRNAseq.fasta" file below)
+module load BBMap/36.20-foss-2016b-Java-1.8.0_92 
 mkdir bbsplit
 
 a=(*.fq.gz)

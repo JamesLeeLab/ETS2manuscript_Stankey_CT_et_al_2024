@@ -1,6 +1,6 @@
-##Macrophage PU1 ChIPseq data from GEO, analyzed with hg19.
-##Fastq files from PU1 ChIP data GSM1681423 & GSM1681425, and their inputs GSM1681427 & GSM1681429, downloaded from GEO.
-##Follow first the ChIPseq_pipeline to process the data, until the bam files have been processed using PICARD, resorted and indexed.
+## Macrophage PU1 ChIPseq data from GEO, analyzed with hg19, used for figures 1 and 4
+## Fastq files from PU1 ChIP data GSM1681423 & GSM1681425, and their inputs GSM1681427 & GSM1681429, downloaded from GEO.
+## Follow first the "ChIPseq_pipeline_SingleEnd" to process the data, until the bam files have been processed using PICARD, resorted and indexed.
 
 ##Call peaks with Macs2:
 macs2 callpeak -t S1_GSM1681423_macro_baselinespi1_trimmed_hg19_rmdup_resorted.bam -c S1_GSM1681427_macro_input_baseline.fastqsanger.gz_trimmed_hg19_sorted_rmdup_resorted.bam -g hs -n PU1_S1_macro_Baseline_hg19 -f AUTO --outdir PEAKS --qvalue 0.05 2> PEAKS/PU1_S1_macs2.log

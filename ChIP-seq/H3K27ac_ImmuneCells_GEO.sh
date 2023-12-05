@@ -1,4 +1,4 @@
-##Analysing H3K27ac ChIPseq data from various immune cell types  
+##Analysing H3K27ac ChIPseq data from various immune cell types, used for figure 1b
 #SRA files downloaded from GEO:
 #Neutrophils: encode data GSE96014
 #Tregs: datasets GSM1893223, GSM1893225, GSM1893236, GSM1893237
@@ -13,7 +13,7 @@ do
     fastq-dump --gzip --split-files $a -O /fastq; 
 done
 
-##Follow first the ChIPseq_pipeline to process the data, until the bam files have been sorted, but don't run PICARD yet.
+##Follow first the "ChIPseq_pipeline_SingleEnd" to process the data, until the bam files have been sorted, but don't run PICARD yet.
 ##IMPORTANT NOTE: for neutrophils, bwa alignment (single-end) was performed with bwa MEM since reads>70bp
 
 #merging technical replicates (rerun of same libraries):

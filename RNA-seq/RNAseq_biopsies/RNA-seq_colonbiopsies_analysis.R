@@ -1,3 +1,4 @@
+# R analysis of colonic biopsies treated with MEKi (figure 5)
 suppressMessages(library(affy))
 suppressMessages(library(edgeR))
 suppressMessages(library(fgsea))

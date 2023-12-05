@@ -1,4 +1,6 @@
-# Analysis of ETS2 RNAseq data from primary human macrophages. Expression filter applied to all samples, then analyses on selected sample groups.
+# R analysis of ETS2 RNAseq data from primary human macrophages. Expression filter applied to all samples, then analyses on selected sample groups. 
+# Used for figure 2
+# NOTE: the same (edited) script was used to analyse the raw counts from the "Chr21q22 disease datasets" i.e. IBD macrophages (GSE123141), primary sclerosing cholangitis liver (GSE159676) and ankylosing spondylitis synovium (GSE41038) and then perform fGSEA analysis (supplementary figure 7)
 suppressMessages(library(limma))
 suppressMessages(library(affy))
 suppressMessages(library(edgeR))
@@ -42,7 +44,7 @@ g1.res.SYMBOL$ensembl_gene_id=rownames(g1.res.SYMBOL)
 g1.res_plot=join(g1.res.SYMBOL,G_list)
 EnhancedVolcano(g1.res_plot,x="logFC",y="P.Value",lab=g1.res_plot$hgnc_symbol,pCutoff = 0.0066,legendLabels = F,title="",subtitle="", xlim=c(-4,4),ylim=c(0,15),labSize = 5,drawConnectors = T,max.overlaps=Inf, maxoverlapsConnectors=Inf, typeConnectors = 'open', FCcutoff=1,endsConnectors="last")
 
-# Pathway analysis using fGSEA
+# Pathway analysis using fGSEA (figure 2)
 genelists=read.csv(file="GOBP_genesets.csv",header=T) # csv of GO biological pathways (converted from gmt downloaded from MSigDB)
 lists=lapply(genelists,function(col)col[!is.na(col)])
 g1.fgsea=read.csv(file="ko.g1.res_finalSYMBOL_rank.csv",header=F,row.names=1)
@@ -50,7 +52,7 @@ g1.fgsea_num=unlist(g1.fgsea)
 names(g1.fgsea_num)=rownames(g1.fgsea)
 g1.fgsea_gobp=fgsea(pathways=lists, stats=g1.fgsea_num, eps=0.0, minSize=15, maxSize=1000)
 
-# chr21q22 enhancer deletion analysis
+# chr21q22 enhancer deletion analysis (figure 2)
 chr21=eset.exp[,c(3,6,7,10,11,12,13,16,20,23)]
 chr21_dge=DGEList(counts=chr21)
 chr21_dge=calcNormFactors(chr21_dge)
@@ -68,7 +70,7 @@ summary(decideTests(chr21.fit3, p=0.05, adjust.method = 'BH'))
 chr21.res=topTable(chr21.fit3,number=12144,p.value=1,lfc=0,adjust.method="BH")
 #write.csv(chr21.res,file="chr21.res_final.csv")
 
-# roxadustat-treated TPP analysis
+# roxadustat-treated TPP analysis (figure 4)
 rox=eset.exp[,c(24:38)]
 rox_dge=DGEList(counts=rox)
 rox_dge=calcNormFactors(rox_dge)

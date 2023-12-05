@@ -1,6 +1,6 @@
-##Pipeline for ChIP-seq analysis with hg19:
-#this pipeline works on single-end fastq files for ChIP-seq datasets. 
-#It uses the genome build hg19 to be compatible with super-enhancer analysis (when looking at H3k27ac data) using ROSE (https://github.com/younglab/ROSE).
+## Pipeline used for SINGLE-END ChIP-seq analysis with hg19
+# this pipeline works on single-end fastq files for ChIP-seq datasets, used for figures 1 and S4
+# It uses the genome build hg19 to be compatible with super-enhancer analysis (when looking at H3k27ac data) using ROSE (https://github.com/younglab/ROSE).
 
 #FASTQC on initial fastq files:
 module load FastQC/0.11.8-Java-1.8
