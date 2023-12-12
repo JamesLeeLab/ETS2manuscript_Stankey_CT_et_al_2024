@@ -1,4 +1,4 @@
-# Code to download monocyte / macrophage microarray data from Xue et al. 2014 (GSE47189), normalise, collapse biological replicates and probes mapping to same gene (both by mean values), and use the resulting dataset to perform GSVA to identify conditions that most closely recapitulate state of monocytes from IBD.
+# Code to download monocyte / macrophage microarray data from Xue et al. 2014 (GSE47189), normalise, collapse biological replicates and probes mapping to same gene, and use the resulting dataset to perform GSVA to identify conditions that most closely recapitulate state of monocytes from IBD.
 library('GSVA')
 library('edgeR')
 library('affy')
