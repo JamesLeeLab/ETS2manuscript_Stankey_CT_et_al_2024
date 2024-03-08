@@ -30,5 +30,26 @@ write.table(gct, file=output, quote=FALSE, row.names=FALSE, col.names=TRUE, sep=
 ## appending column names to file
 
 #SNPsea - code to generate pathway file from GO Biological Pathways (downloaded as .gmt file from MSigDB) attached as RMD file
-#run SNPsea (linux)
+#run SNPsea v1.0.4(linux)
 bin/snpsea-linux64 --args args.txt
+
+#calculate enrichment z score from SNPsea output
+library(readr)
+library(ggplot2)
+library(stringr)
+library(ggrepel)
+library(dplyr)
+d <- read_tsv("condition_pvalues.txt")
+colnames(d)=c("condition","pvalue","nulls_observed","nulls_tested","score","null_scores")
+names=c("ETS2_DN","GOBP_ALPHA_BETA_T_CELL_ACTIVATION","GOBP_AUTOPHAGOSOME_ORGANIZATION","GOBP_CELL_ADHESION_MEDIATED_BY_INTEGRIN","GOBP_INTEGRIN_ACTIVATION","GOBP_INTERLEUKIN_10_PRODUCTION","GOBP_INTESTINAL_EPITHELIAL_STRUCTURE_MAINTENANCE","GOBP_MAINTENANCE_OF_GASTROINTESTINAL_EPITHELIUM","GOBP_NEGATIVE_REGULATION_OF_AUTOPHAGY","GOBP_POSITIVE_REGULATION_OF_AUTOPHAGY","GOBP_POSITIVE_REGULATION_OF_INTERLEUKIN_10_PRODUCTION","GOBP_POSITIVE_REGULATION_OF_T_HELPER_1_TYPE_IMMUNE_RESPONSE","GOBP_POSITIVE_REGULATION_OF_T_HELPER_17_TYPE_IMMUNE_RESPONSE","GOBP_PROCESS_UTILIZING_AUTOPHAGIC_MECHANISM","GOBP_REGULATION_OF_AUTOPHAGY","GOBP_RESPONSE_TO_MURAMYL_DIPEPTIDE","GOBP_RESPONSE_TO_TUMOR_NECROSIS_FACTOR","GOBP_T_HELPER_17_CELL_DIFFERENTIATION","GOBP_T_HELPER_17_TYPE_IMMUNE_RESPONSE","GOBP_TUMOR_NECROSIS_FACTOR_MEDIATED_SIGNALING_PATHWAY","OE_ETS2_UP")
+subset=d[d$condition %in% names,]
+subset$nulls_mean <- 0
+for (i in seq(nrow(subset))) {
+subset$nulls_mean[i] <- mean(parse_number(str_split(subset$null_scores[i], ",")[[1]]))
+}
+subset$nulls_sem <- 0
+for (i in seq(nrow(subset))) {
+subset$nulls_sem[i] <- sd(parse_number(str_split(subset$null_scores[i], ",")[[1]])/sqrt(subset$nulls_tested[i]))
+}
+subset$enrich.z=(subset$score-subset$nulls_mean)/(subset$nulls_sem)
+print(subset, n=21)
